@@ -1,0 +1,23 @@
+services:
+  pg-itp-iam-db:
+    image: postgres:17.5-bullseye
+    container_name: pg-itp-iam-db
+    environment:
+      POSTGRES_USER: itpusr
+      POSTGRES_PASSWORD: itp@168
+      # optional, but helps the init runner pick a default DB to connect to
+      POSTGRES_DB: postgres
+    ports:
+      - "5169:5432"
+    volumes:
+      - ./init_scripts/pg_itp_iam_init.sql:/docker-entrypoint-initdb.d/01_pg_itp_iam_init.sql:ro
+      - pg-itp-iam-vol:/var/lib/postgresql/data
+    networks:
+      - itp-net
+
+volumes:
+  pg-itp-iam-vol:
+
+networks:
+  itp-net:
+    external: true
