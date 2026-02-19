@@ -15,8 +15,24 @@ services:
     networks:
       - itp-net
 
+  pg-itp-iphone-db:
+    image: postgres:17.5-bullseye
+    container_name: pg-itp-iphone-db
+    environment:
+      POSTGRES_USER: itpusr
+      POSTGRES_PASSWORD: itp@168
+      POSTGRES_DB: postgres
+    ports:
+      - "5170:5432"
+    volumes:
+      - ./init_scripts/pg_itp_iphone_init.sql:/docker-entrypoint-initdb.d/01_pg_itp_iphone_init.sql:ro
+      - pg-itp-iphone-vol:/var/lib/postgresql/data
+    networks:
+      - itp-net
+
 volumes:
   pg-itp-iam-vol:
+  pg-itp-iphone-vol:
 
 networks:
   itp-net:
